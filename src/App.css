@@ -57,3 +57,22 @@
   stroke-linejoin: round;
   stroke-linecap: round;
 }
+
+.points .land {
+  fill: #137b80;
+}
+.points .sphere {
+  fill: #ececec;
+}
+.points .interiors {
+  fill: none;
+  stroke: #43a4a8;
+}
+.points .graticules {
+  fill: none;
+  stroke: #dadada;
+}
+.axis-label {
+  font-size: 22px;
+  fill: black;
+}

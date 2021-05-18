@@ -1,11 +1,8 @@
-import { csv, arc, pie, scaleOrdinal } from "d3";
+import { arc, pie } from "d3";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 function PieChart() {
-  const csvUrl =
-    "https://gist.githubusercontent.com/curran/b236990081a24761f7000567094914e0/raw/cssNamedColors.csv";
-
   const width = 300;
   const height = 200;
   const centerX = width / 2;

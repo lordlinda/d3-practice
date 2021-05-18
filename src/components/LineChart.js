@@ -4,10 +4,8 @@ import {
   scaleLinear,
   scaleTime,
   extent,
-  max,
   timeFormat,
   line,
-  curveNatural,
   curveBasis,
 } from "d3";
 
@@ -29,8 +27,6 @@ function LineChart() {
 
   const width = 700;
   const height = 400;
-  const xValue = (d) => d.timestamp;
-  const yValue = (d) => d.temperature;
   const margin = { top: 20, right: 30, bottom: 65, left: 90 };
 
   const innerHeight = height - margin.top - margin.bottom;
