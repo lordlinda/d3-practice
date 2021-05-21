@@ -59,20 +59,25 @@
 }
 
 .points .land {
-  fill: #137b80;
+  fill: #ececec;
 }
 .points .sphere {
-  fill: #ececec;
+  fill: #fbfbfb;
 }
 .points .interiors {
   fill: none;
-  stroke: #43a4a8;
+  stroke: #d9dfe0;
 }
 .points .graticules {
   fill: none;
-  stroke: #dadada;
+  stroke: #ececec;
 }
 .axis-label {
   font-size: 22px;
   fill: black;
+}
+
+.city {
+  fill: #137b80;
+  opacity: 0.3;
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { csv, scaleLinear, extent } from "d3";
+import { csv, scaleLinear, extent, scaleOrdinal } from "d3";
 import { Dropdown } from "./Dropdown";
 function ScatterPlot() {
   const width = 960;
@@ -8,9 +8,10 @@ function ScatterPlot() {
     top: 20,
     bottom: 75,
     left: 90,
-    right: 30,
+    right: 100,
   };
   const [data, setData] = useState([]);
+  const [hoveredValue, setHoveredValue] = useState("");
 
   const innerHeight = height - margin.top - margin.bottom;
   const innerWidth = width - margin.right - margin.left;
@@ -41,6 +42,11 @@ function ScatterPlot() {
     .domain(extent(data, (d) => d[yAttribute]))
     .range([0, innerHeight]);
 
+  /**color scale */
+  const colorScale = scaleOrdinal()
+    .domain(data.map((d) => d.species))
+    .range(["#E6842A", "#137B80", "#8E6C8A"]);
+
   const attributes = [
     { value: "sepal_length", label: "Sepal Length" },
     { value: "sepal_width", label: "Sepal Width" },
@@ -50,7 +56,10 @@ function ScatterPlot() {
   ];
   const xValue = (d) => d[xAttribute];
   const yValue = (d) => d[yAttribute];
-  console.log();
+  const colorValue = (d) => d.species;
+
+  const filteredData = data.filter((d) => d.species === hoveredValue);
+
   return (
     <div>
       {" "}
@@ -70,6 +79,25 @@ function ScatterPlot() {
       />
       <svg width={width} height={height}>
         <g transform={`translate(${margin.left},${margin.top})`}>
+          {/**color legend */}
+          <g transform={`translate(${innerWidth},50)`}>
+            <text className="axis-label" y={-7}>
+              Species
+            </text>
+            {colorScale.domain().map((domainValue, i) => (
+              <g
+                key={i}
+                transform={`translate(0,${i * 20})`}
+                onMouseEnter={() => setHoveredValue(domainValue)}
+                onMouseLeave={() => setHoveredValue("")}
+              >
+                <circle fill={colorScale(domainValue)} r={7}></circle>
+                <text x={15} dy=".32em">
+                  {domainValue}
+                </text>
+              </g>
+            ))}
+          </g>
           {/**yscale axis and label */}
           {/**yscale label */}
           <text
@@ -118,17 +146,33 @@ function ScatterPlot() {
               </text>
             </g>
           ))}
-          {data.map((d, i) => (
-            <circle
-              className="mark"
-              cx={xScale(xValue(d))}
-              cy={yScale(yValue(d))}
-              r={7}
-              key={i}
-            >
-              <title>{d[xAttribute]}</title>
-            </circle>
-          ))}
+          <g opacity={hoveredValue ? 0.2 : 1}>
+            {data.map((d, i) => (
+              <circle
+                cx={xScale(xValue(d))}
+                cy={yScale(yValue(d))}
+                r={7}
+                key={i}
+                fill={colorScale(colorValue(d))}
+              >
+                <title>{d[xAttribute]}</title>
+              </circle>
+            ))}
+          </g>
+          {/**the data that has been hovered on */}
+          <g>
+            {filteredData.map((d, i) => (
+              <circle
+                cx={xScale(xValue(d))}
+                cy={yScale(yValue(d))}
+                r={7}
+                key={i}
+                fill={colorScale(colorValue(d))}
+              >
+                <title>{d[xAttribute]}</title>
+              </circle>
+            ))}
+          </g>
         </g>
       </svg>
     </div>
